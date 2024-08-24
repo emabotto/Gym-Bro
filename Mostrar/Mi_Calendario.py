@@ -42,22 +42,23 @@ class Calendario:
             if i != 0: 
                 contenedor1 = ctk.CTkFrame(self.contenedor, corner_radius=6)
                 contenedor1.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")  
-                if col != 0 and col !=6: # Si es miercoles
-                    boton_inscripcion = ctk.CTkButton(contenedor1, text=i, font=("Arial", 12), height=80, width= 20, command=lambda dia=i: self.inscribirse_a_clase(dia))
-                    boton_inscripcion.pack(side="top",fill="x",padx=5, pady=5)
+                if col == 0: #Los domingos esta cerrado asi que no se pueden inscribir 
+                    etiqueta_domingo = ctk.CTkLabel(contenedor1,text = i,font=("Arial", 12), height=80, width= 20)
+                    etiqueta_domingo.pack(side="top",fill="x",padx=5, pady=5) 
                 else:
                     boton_inscripcion = ctk.CTkButton(contenedor1, text=i, font=("Arial", 12), height=80, width= 20, command=lambda dia=i: self.inscribirse_a_clase(dia))
-                    boton_inscripcion.pack(side="top",fill="x",padx=5, pady=5)   
+                    boton_inscripcion.pack(side="top",fill="x",padx=5, pady=5) 
             col += 1
             if col > 6:
                 col = 0
                 row += 1
+
     def inscribirse_a_clase(self, dia):
         ventana_secundaria = ctk.CTkToplevel(self.contenedor)
         ventana_secundaria.geometry('400x150')
         ventana_secundaria.title('Inscripcion')
-        ventana_secundaria.grab_set()  #Bloquea la ventana secundaria para que no interactue con la principal hasta que la cierre
-
+        ventana_secundaria.grab_set()  # Bloquea la ventana secundaria para que no interactue con la principal hasta que la cierre
+        
         ventana_secundaria.mainloop()
 
     def mes_anterior(self):

@@ -28,7 +28,6 @@ def Tomar_Datos(i):
     return lista
 
 def Modificar_Datos(dato,i):
-
     usu.Correo_setter(dato[0],i)
     usu.Contra_setter(dato[1],i)
     usu.Nombre_setter(dato[2],i)
@@ -46,9 +45,8 @@ def Verificar_Datos(correo_ingre, contra_ingre):
     for i in range(len(usu.correo)):
         if usu.Correo_get(i) == correo_ingre:
             existe = True
-            valor = i
+            valor = i   #Devuelve la posicion de la persona en la lista
     if  existe == True and usu.Contra_get(valor) == contra_ingre:
-        print(f'bienvenido {usu.Correo_get(valor)} cuentas con previlegios {usu.Tipo_get(valor)}')
         return True , valor
     else:
         print('No existe este chabon')
@@ -62,7 +60,7 @@ def Agregar_Usuario(usuario,contra,tipo,nombre, apellido,telefono):
     usu.Contra_setter(telefono,'No existe')
     usu.Tipo_setter(tipo,'No existe')
     usu.Imagen_setter('Usuario_Inicial.jpg','No existe')
-    nuevo_usu = usuario + ',' + contra +  ',' + nombre + ','+ apellido + ',' + telefono + ',' + str(tipo) + 'BaseDeDatos/Usuario_Inicial.jpg' + ','
+    nuevo_usu = usuario + ',' + contra +  ',' + nombre + ','+ apellido + ',' + telefono + ',' + str(tipo) + ',' + 'BaseDeDatos/Usuario_Inicial.jpg' + ','
     with open('BaseDeDatos/Cuentas.txt', 'a') as archivo:
         archivo.write('\n')
         archivo.write(nuevo_usu)

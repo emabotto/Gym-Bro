@@ -1,1 +1,1 @@
-emanuel,42204994,emanuel,botto,3496413383,1,Imagenes/Imagen 3.png,
+emanuel,42204994,emanuel,botto,Ingresar telefono,1,Imagenes/Imagen 3.png,
