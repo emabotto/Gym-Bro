@@ -2,9 +2,9 @@ import tkinter as tk
 import customtkinter as ctk
 from BaseDeDatos.Datos import Tomar_Datos
 from Pantallas.Ventana import Miventana
-from Mostrar.Mi_Calendario import Calendario
+from Mostrar.Calendario import Calendario
 from Mostrar.Perfil import Perfil
-
+from Mostrar.Manejo_de_Clases import *
 
 class Inicio(Miventana):
     def __init__(self,ingreso):
@@ -33,6 +33,9 @@ class Inicio(Miventana):
         elif apretado == 'Configuracion':
             self.borrar_contenedor()
             self.MostrarCalendario()
+        elif apretado == 'Agregar Clases':
+            self.borrar_contenedor()
+            crear_clase(self.contenedor2)
         else: 
             self.borrar_contenedor()
     
