@@ -1,4 +1,4 @@
-from Pantallas.InicioSecicion import VentanaIniciarSecion
+from Pantallas.Inicio_Secicion import VentanaIniciarSecion
 from BaseDeDatos.Usuario import Usuario
 from BaseDeDatos.Datos import Leer_Datos_Guardados
 
