@@ -96,21 +96,3 @@ def get_usuario_clase():
         finally:
             cursor.close()
             connection.close()
-
-# Ejemplo de uso
-if __name__ == "__main__":
-    usuarios = get_usuarios()
-    clases = get_clases()
-    usuario_clases = get_usuario_clase()
-
-    print("Usuarios:")
-    for usuario in usuarios:
-        print(vars(usuario))
-
-    print("\nClases:")
-    for clase in clases:
-        print(vars(clase))
-
-    print("\nAsignaciones de Usuario a Clase:")
-    for uc in usuario_clases:
-        print(vars(uc))
