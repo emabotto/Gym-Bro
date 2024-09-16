@@ -60,7 +60,7 @@ def Agregar_Usuario(usuario,contra,tipo,nombre, apellido,telefono):
     usu.Contra_setter(telefono,'No existe')
     usu.Tipo_setter(tipo,'No existe')
     usu.Imagen_setter('Usuario_Inicial.jpg','No existe')
-    nuevo_usu = usuario + ',' + contra +  ',' + nombre + ','+ apellido + ',' + telefono + ',' + str(tipo) + ',' + 'BaseDeDatos/Usuario_Inicial.jpg' + ','
+    nuevo_usu = usuario + ',' + contra +  ',' + nombre + ','+ apellido + ',' + telefono + ',' + str(tipo) + ',' + 'Imagenes/Nuevo Usuario.png' + ','
     with open('BaseDeDatos/Cuentas.txt', 'a') as archivo:
         archivo.write('\n')
         archivo.write(nuevo_usu)
