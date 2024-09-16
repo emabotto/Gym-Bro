@@ -7,7 +7,6 @@ from Mostrar.Perfil import Perfil
 from Mostrar.Manejo_de_Clases import *
 from Mostrar.Manejo_de_Usuarios import *
 
-
 class Inicio(Miventana):
     def __init__(self,ingreso):
         super().__init__('Gym-Bro - Menu Principal',625,975)
