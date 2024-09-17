@@ -8,10 +8,9 @@ from Pantallas.Inicio import Inicio
 class VentanaIniciarSecion(Miventana):
     
     def __init__(self):
-        super().__init__('Iniciar Secion')
+        super().__init__('Iniciar Secion',600,450)
     
     def Abrir_ventana(self):
-        self.main_ventana.geometry('450x600')
         botones = ['Ingresar', 'Registrarse', 'Salir']
         colorA = '#F43E17'
         colorB = '#000000'
