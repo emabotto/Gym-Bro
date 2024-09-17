@@ -5,7 +5,10 @@ from Pantallas.Ventana import Miventana
 from Mostrar.Calendario import Calendario
 from Mostrar.Perfil import Perfil
 from Mostrar.Manejo_de_Clases import *
+<<<<<<< HEAD
 from Mostrar.Manejo_de_Usuarios import *
+=======
+>>>>>>> ed5454bfec84e51f2c42337d427571873d9a687e
 
 class Inicio(Miventana):
     def __init__(self,ingreso):
@@ -40,10 +43,14 @@ class Inicio(Miventana):
             self.MostrarCalendario()
         elif apretado == 'Agregar Clases':
             self.borrar_contenedor()
+<<<<<<< HEAD
             self.administrar_clases()
         elif apretado == 'Administrar Usuarios':
             self.borrar_contenedor()
             self.administrar_usuario()
+=======
+            crear_clase(self.contenedor2)
+>>>>>>> ed5454bfec84e51f2c42337d427571873d9a687e
         else: 
             self.borrar_contenedor()
     
