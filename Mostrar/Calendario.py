@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from datetime import date
 import calendar
-
+from Archivos_admi.Admin_Inscripciones import Inscripciones
 class Calendario:
     def __init__(self,contenedor):
         self.contenedor = contenedor
@@ -54,13 +54,8 @@ class Calendario:
                 row += 1
 
     def inscribirse_a_clase(self, dia):
-        ventana_secundaria = ctk.CTkToplevel(self.contenedor)
-        ventana_secundaria.geometry('400x150')
-        ventana_secundaria.title('Inscripcion')
-        ventana_secundaria.grab_set()  # Bloquea la ventana secundaria para que no interactue con la principal hasta que la cierre
+        ventana_inscripciones = Inscripciones(dia,self.mes,self.anio,self.contenedor)
         
-        ventana_secundaria.mainloop()
-    
     def mes_anterior(self):
         self.mes -= 1
         if self.mes == 0:

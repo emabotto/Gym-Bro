@@ -4,11 +4,8 @@ from BaseDeDatos.Datos import Tomar_Datos
 from Pantallas.Ventana import Miventana
 from Mostrar.Calendario import Calendario
 from Mostrar.Perfil import Perfil
-from Mostrar.Manejo_de_Clases import *
-<<<<<<< HEAD
-from Mostrar.Manejo_de_Usuarios import *
-=======
->>>>>>> ed5454bfec84e51f2c42337d427571873d9a687e
+from Archivos_admi.Manejo_de_Clases import *
+from Archivos_admi.Manejo_de_Usuarios import *
 
 class Inicio(Miventana):
     def __init__(self,ingreso):
@@ -18,8 +15,8 @@ class Inicio(Miventana):
         
     def Abrir_ventana(self):
         
-        self.main_ventana.grid_columnconfigure(1, weight=1)  # Permitir que la columna 1 (contenedor2) se expanda
-        self.main_ventana.grid_rowconfigure(0, weight=1)     # Permitir que la fila 0 se expanda
+        self.main_ventana.grid_columnconfigure(1, weight=1)  
+        self.main_ventana.grid_rowconfigure(0, weight=1)     
         
         self.contenedor1 = ctk.CTkFrame(self.main_ventana, width=150, height=600)
         self.contenedor1.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
@@ -30,6 +27,18 @@ class Inicio(Miventana):
     def Contenedores(self):
         self.contenedor2 = ctk.CTkFrame(self.main_ventana)
         self.contenedor2.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+        self.CargarImagenFondo() 
+        
+    def CargarImagenFondo(self):
+        imagen_original = Image.open("Imagenes/Imagen 1.jpg")
+        
+        imagen_redimensionada = imagen_original.resize((500, 500))  
+        
+        self.background_image = ImageTk.PhotoImage(imagen_redimensionada)
+
+        fondo_label = ctk.CTkLabel(self.contenedor2, image=self.background_image, text='')
+        fondo_label.place(relwidth=1, relheight=1)
+        
         
     def botones(self,apretado):
         if apretado == 'Calendario':
@@ -43,14 +52,10 @@ class Inicio(Miventana):
             self.MostrarCalendario()
         elif apretado == 'Agregar Clases':
             self.borrar_contenedor()
-<<<<<<< HEAD
             self.administrar_clases()
         elif apretado == 'Administrar Usuarios':
             self.borrar_contenedor()
             self.administrar_usuario()
-=======
-            crear_clase(self.contenedor2)
->>>>>>> ed5454bfec84e51f2c42337d427571873d9a687e
         else: 
             self.borrar_contenedor()
     
