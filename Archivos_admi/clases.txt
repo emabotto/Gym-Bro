@@ -1,0 +1,10 @@
+Clase: Calistenia - Dia: 16/10/2024 - Cupo Maximo: 6
+Clase: Calistenia - Dia: 5/10/2024 - Cupo Maximo: 8
+Clase: Funcional - Dia: 16/10/2024 - Cupo Maximo: 8
+Clase: Calistenia - Dia: 27/9/2024 - Cupo Maximo: 15
+Clase: Boxeo - Dia: 6/10/2024 - Cupo Maximo: 10
+Clase: Calistenia - Dia: 23/9/2024 - Cupo Maximo: 13
+Clase: Crossfit - Dia: 1/10/2024 - Cupo Maximo: 10
+Clase: Funcional - Dia: 20/10/2024 - Cupo Maximo: 5
+Clase: Zumba - Dia: 15/10/2024 - Cupo Maximo: 7
+Clase: Calistenia - Dia: 29/9/2024 - Cupo Maximo: 9
