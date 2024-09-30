@@ -1,86 +1,94 @@
-import tkinter as tk
+from tkinter import messagebox
 import customtkinter as ctk
 from PIL import Image, ImageTk
 from BaseDeDatos.Datos import *
 
-
 class Gestion_Usuario:
     def __init__(self, contenedor):
-        self.contenedor = ctk.CTkFrame(contenedor, width=800, height=600)
-        self.contenedor.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
+        
+        self.scroll_frame = ctk.CTkScrollableFrame(contenedor, width=750, height=580)
+        self.scroll_frame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
+        
+        self.scroll_frame.grid_columnconfigure(0, weight=2)  # Columna de correos más ancha
+        self.scroll_frame.grid_columnconfigure(1, weight=1)  # Columna de privilegios
+        self.scroll_frame.grid_columnconfigure(2, weight=1)  # Columna de botones
+        
         self.privilegios_seleccionables = ['Cliente', 'Administrador']
         
-        self.trash_icon = Image.open("Imagenes/Inconos/Basurero.png")
-        self.trash_icon = self.trash_icon.resize((20, 20), Image.Resampling.LANCZOS)
-        self.trash_icon = ImageTk.PhotoImage(self.trash_icon)
+        # Cargar íconos
+        self.trash_icon = self.cargar_icono("Imagenes/Inconos/Basurero.png")
+        self.act_icon = self.cargar_icono("Imagenes/Inconos/Actualizar.png")
         
-        self.act_icon = Image.open("Imagenes/Inconos/Actualizar.png")
-        self.act_icon = self.act_icon.resize((20, 20), Image.Resampling.LANCZOS)
-        self.act_icon = ImageTk.PhotoImage(self.act_icon)
-        
+        # Mostrar los usuarios al cargar
         self.Mostrar_Usuarios_registrados()
+
+    def cargar_icono(self, ruta):
+        # Función para cargar y redimensionar íconos
+        icono = Image.open(ruta)
+        icono = icono.resize((20, 20), Image.Resampling.LANCZOS)
+        return ImageTk.PhotoImage(icono)
 
     def Mostrar_Usuarios_registrados(self):
         # Limpiar la interfaz antes de volver a mostrar los datos
-        for widget in self.contenedor.winfo_children():
+        for widget in self.scroll_frame.winfo_children():
             widget.destroy()
 
+        # Encabezado de la tabla
         etiquetas = ['Correo', 'Privilegios', 'Acción']
-        col = 0
-        for etiqueta in etiquetas:
-            ctk.CTkLabel(self.contenedor, text=etiqueta, font=("Arial", 14, "bold")).grid(row=0, column=col, padx=20, pady=10)
-            col += 1
+        for col, etiqueta in enumerate(etiquetas):
+            ctk.CTkLabel(self.scroll_frame, text=etiqueta, font=("Arial", 14, "bold")).grid(row=0, column=col, padx=20, pady=10, sticky="ew")
 
+        # Mostrar usuarios
         usuarios = self.Limpiar_Lista()
         for i, usuario in enumerate(usuarios):
-            col = 0
-            for dato in usuario[:-1]:
-                ctk.CTkLabel(self.contenedor, text=dato).grid(row=i+1, column=col, padx=20, pady=10)
-                col += 1
+            ctk.CTkLabel(self.scroll_frame, text=usuario[0], anchor="w").grid(row=i+1, column=0, padx=20, pady=10, sticky="ew")
             
             # ComboBox para seleccionar nuevos privilegios
-            nuevo_privilegio = ctk.CTkOptionMenu(self.contenedor, values=self.privilegios_seleccionables)
+            nuevo_privilegio = ctk.CTkOptionMenu(self.scroll_frame, values=self.privilegios_seleccionables)
             nuevo_privilegio.set(usuario[-1])
-            nuevo_privilegio.grid(row=i+1, column=col, padx=20, pady=10)
+            nuevo_privilegio.grid(row=i+1, column=1, padx=20, pady=10, sticky="ew")
             
-            # Botón para actualizar privilegios
-            btn_actualizar = ctk.CTkButton(self.contenedor, text='',image=self.act_icon, command=lambda i=i, nuevo_priv=nuevo_privilegio: self.Actualizar_Privilegio(i, nuevo_priv),width=20,height=20)
-            btn_actualizar.grid(row=i+1, column=col+1, padx=20, pady=10)
-            
-            # Botón para eliminar usuario
-            btn_eliminar = ctk.CTkButton(self.contenedor,text='', image=self.trash_icon, command=lambda i=i: self.Eliminar_Usuario(i),width=20,height=20)
-            btn_eliminar.grid(row=i+1, column=col+2, padx=5, pady=10)
-            
-    
+            # Botones de acción
+            self.crear_botones_accion(i, nuevo_privilegio, 2)
+
+    def crear_botones_accion(self, index, nuevo_privilegio, col):
+        # Botón para actualizar privilegios
+        ctk.CTkButton(self.scroll_frame, text='', image=self.act_icon, 
+                      command=lambda: self.Actualizar_Privilegio(index, nuevo_privilegio), width=20, height=20).grid(row=index+1, column=col, padx=20, pady=10)
+        
+        # Botón para eliminar usuario
+        ctk.CTkButton(self.scroll_frame, text='', image=self.trash_icon, 
+                      command=lambda: self.Eliminar_Usuario(index), width=20, height=20).grid(row=index+1, column=col+1, padx=5, pady=10)
+
     def Limpiar_Lista(self):
+        # Cargar datos de la base de datos y transformar los privilegios
         lista = []
         for i in range(len(usu.correo)):
             datos = Tomar_Datos(i)
-            if datos[5] == '1':
-                datos[5] = 'Administrador'
-            else:
-                datos[5] = 'Cliente'
+            datos[5] = 'Administrador' if datos[5] == '1' else 'Cliente'
             lista.append(tuple(datos[:1] + [datos[5]]))
         return lista
-    
+
     def Actualizar_Privilegio(self, index, nuevo_privilegio_widget):
+        # Actualizar privilegios en la base de datos
         nuevo_privilegio = nuevo_privilegio_widget.get()
-        usuario_id = self.Limpiar_Lista()[index][0]  # Suponiendo que el correo es el ID
-        if nuevo_privilegio == 'Administrador':
-            privilegio_valor = '1'
-        else:
-            privilegio_valor = '0'
+        usuario_id = self.Limpiar_Lista()[index][0]  
+        privilegio_valor = '1' if nuevo_privilegio == 'Administrador' else '0'
         self.Actualizar_Privilegio_Usuario(usuario_id, privilegio_valor)
-        self.Mostrar_Usuarios_registrados()
-    
+        self.Mostrar_Usuarios_registrados()  # Recargar usuarios actualizados
+
     def Eliminar_Usuario(self, index):
-        usuario_id = self.Limpiar_Lista()[index][0]  # Suponiendo que el correo es el ID
-        confirmacion = tk.messagebox.askyesno("Confirmar", "¿Estás seguro de que quieres eliminar este usuario?")
+        # Eliminar usuario tras confirmación
+        usuario_id = self.Limpiar_Lista()[index][0] 
+        confirmacion = messagebox.askyesno("Confirmar", "¿Estás seguro de que quieres eliminar este usuario?")
         if confirmacion:
-            self.Eliminar_Usuario(usuario_id)
+            self.Eliminar_Usuario_BD(usuario_id)
             self.Mostrar_Usuarios_registrados()
-    
-    def  Actualizar_Privilegio_Usuario(usuario_id, privilegio_valor):
-        return
-    def Eliminar_Usuario(usuario_id):
-        return
+
+    def Actualizar_Privilegio_Usuario(self, usuario_id, privilegio_valor):
+        # Lógica para actualizar privilegio en la base de datos
+        pass
+
+    def Eliminar_Usuario_BD(self, usuario_id):
+        # Lógica para eliminar usuario de la base de datos
+        pass

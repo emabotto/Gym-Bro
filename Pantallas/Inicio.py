@@ -12,7 +12,7 @@ class Inicio(Miventana):
         super().__init__('Gym-Bro - Menu Principal',625,975)
         self.ingreso = int(ingreso)
         self.info = Tomar_Datos(self.ingreso)
-        
+
     def Abrir_ventana(self):
         
         self.main_ventana.grid_columnconfigure(1, weight=1)  
@@ -66,7 +66,8 @@ class Inicio(Miventana):
         Gestion_Usuario(self.contenedor2)
         
     def MostrarCalendario(self):
-        Calendario(self.contenedor2)
+        nombre_completo = f'{self.info[2]} {self.info[3]}'
+        Calendario(self.contenedor2,nombre_completo)
 
     def MostrarPerfil(self):
         Perfil(self.contenedor2,self.ingreso)
@@ -75,7 +76,7 @@ class Inicio(Miventana):
         botones =  ['Calendario','Perfil','Configuracion','Rutina','Agregar Clases','Generar Reporte','Administrar Usuarios']
         alt = 10
         cont = 0 
-        print(self.info)
+
         for i in botones:
             if cont < 3:
                 self.generar_boton(i,alt)

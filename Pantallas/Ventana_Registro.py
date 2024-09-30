@@ -6,13 +6,9 @@ from BaseDeDatos.Datos import *
 
 class Registro(Miventana):
     def __init__(self):
-        super().__init__('Registro')
+        super().__init__('Registro de Usuario',600,450)
 
     def Abrir_ventana(self):
-        self.main_ventana.geometry("450x600")
-        self.main_ventana.title("Registro de Usuario")
-
-        botones = ['Registrarse', 'Volver']
 
         entrada = ctk.CTkFrame(master=self.main_ventana,width=300,height=380,corner_radius=10)
         entrada.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
