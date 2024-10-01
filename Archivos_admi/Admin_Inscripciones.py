@@ -65,20 +65,21 @@ class Inscripciones:
         return inscripciones
 
     def crear_titulo(self):
-        titulo = ctk.CTkLabel(self.ventana_secundaria, text="Inscripción a Clases", font=("Arial", 15, "bold"), text_color="#ECF0F1")
+        self.ventana_secundaria.configure( fg_color='#2C3E50' )
+        titulo = ctk.CTkLabel(self.ventana_secundaria, text="INSCRIBCION A CLASES", font=("Arial", 15, "bold"), text_color="#ECF0F1", fg_color='#2C3E50')
         titulo.pack(pady=(20, 10))
 
     def crear_pestanias(self):
         self.tab_control = ttk.Notebook(self.ventana_secundaria, style='TNotebook')
         self.tab_control.pack(expand=1, fill='both')
-
+        
         # Estilo de las pestañas
         style = ttk.Style()
         style.configure('TNotebook', background="#2C3E50", bordercolor="black", borderwidth=2, relief='solid')
         style.configure('TNotebook.Tab', background="#34495E", foreground="white", padding=[10, 5])
         style.map('TNotebook.Tab', background=[('active', '#1ABC9C'), ('!active', '#34495E')],
                   foreground=[('active', 'blue'), ('!active', 'black')])
-
+        
         for clase in self.clases_disponibles.keys():
             tab = ctk.CTkFrame(self.tab_control, fg_color="#2C3E50")  # Cambiado bg a fg_color
             self.tab_control.add(tab, text=clase)
