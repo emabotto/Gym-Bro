@@ -225,4 +225,4 @@ Clase: Calistenia - Dia: 28/11/2024 - Cupo Maximo: 14
 Clase: Crossfit - Dia: 29/11/2024 - Cupo Maximo: 10
 Clase: Calistenia - Dia: 29/11/2024 - Cupo Maximo: 14
 Clase: Crossfit - Dia: 30/11/2024 - Cupo Maximo: 10
-Clase: Calistenia - Dia: 30/11/2024 - Cupo Maximo: 14Clase: Funcional - Dia: 01/09/2024 - Cupo Maximo: 1
+Clase: Calistenia - Dia: 30/11/2024 - Cupo Maximo: 14
