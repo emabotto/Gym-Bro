@@ -2,9 +2,11 @@ import customtkinter as ctk
 from datetime import date
 import calendar
 from Archivos_admi.Admin_Inscripciones import Inscripciones
+
 class Calendario:
-    def __init__(self,contenedor):
+    def __init__(self,contenedor,usuario):
         self.contenedor = contenedor
+        self.usuario = usuario
         
         today = date.today()
         self.anio = int(format(today.year))
@@ -54,7 +56,7 @@ class Calendario:
                 row += 1
 
     def inscribirse_a_clase(self, dia):
-        ventana_inscripciones = Inscripciones(dia,self.mes,self.anio,self.contenedor)
+        ventana_inscripciones = Inscripciones(dia,self.mes,self.anio,self.contenedor,self.usuario)
         
     def mes_anterior(self):
         self.mes -= 1
