@@ -58,4 +58,4 @@ class Usuario():
         return self.telefono[i]
     def Imagen_get(self,i):
         return self.imagen[i]
-   
+    

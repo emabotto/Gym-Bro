@@ -1,6 +1,7 @@
 from BaseDeDatos.Usuario import Usuario
 
 def Leer_Datos_Guardados():
+    usuarios = Usuario()
     with open('BaseDeDatos/Cuentas.txt', 'r') as archivo:
         for linea in archivo:
             linea = linea.strip().replace("\\r", "").replace("\n", "").replace("'", "")
@@ -46,12 +47,19 @@ def Verificar_Datos(correo_ingre, contra_ingre):
         if usu.Correo_get(i) == correo_ingre:
             existe = True
             valor = i   #Devuelve la posicion de la persona en la lista
+    
     if  existe == True and usu.Contra_get(valor) == contra_ingre:
         return True , valor
     else:
-        print('No existe este chabon')
         return False, None
-           
+    
+def verificar_registro(correo_ingre):
+    existe = False
+    for i in range(len(usu.correo)):
+        if usu.Correo_get(i) == correo_ingre:
+            existe = True
+    return existe
+
 def Agregar_Usuario(usuario,contra,tipo,nombre, apellido,telefono):
     usu.Correo_setter(usuario,'No existe')
     usu.Contra_setter(contra,'No existe')
@@ -62,8 +70,7 @@ def Agregar_Usuario(usuario,contra,tipo,nombre, apellido,telefono):
     usu.Imagen_setter('Usuario_Inicial.jpg','No existe')
     nuevo_usu = usuario + ',' + contra +  ',' + nombre + ','+ apellido + ',' + telefono + ',' + str(tipo) + ',' + 'Imagenes/Nuevo Usuario.png' + ','
     with open('BaseDeDatos/Cuentas.txt', 'a') as archivo:
-        archivo.write('\n')
-        archivo.write(nuevo_usu)
+        archivo.write('\n' + nuevo_usu)
     archivo.close()
     Leer_Datos_Guardados()
     

@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from tkinter import Tk, messagebox, Listbox, END, ttk
+from datetime import date
 
 class Inscripciones:
     def __init__(self, dia, mes, anio, contenedor, usuario) -> None:
@@ -33,11 +34,15 @@ class Inscripciones:
                 fecha_buscada = seleccion
                 for linea in lineas:
                     partes = linea.strip().split(" - ")
-                    clase = partes[0].replace("Clase: ", "")
-                    fecha = partes[1].replace("Dia: ", "")
-                    cupo_maximo = int(partes[2].replace("Cupo Maximo: ", "").strip())
-                    if fecha == fecha_buscada:
-                        clases_filtradas[clase] = cupo_maximo
+                    
+                    # Verifica que la línea tenga al menos 3 partes (clase, fecha y cupo máximo)
+                    if len(partes) >= 3:
+                        clase = partes[0].replace("Clase: ", "")
+                        fecha = partes[1].replace("Dia: ", "")
+                        cupo_maximo = int(partes[2].replace("Cupo Maximo: ", "").strip())
+                        if fecha == fecha_buscada:
+                            clases_filtradas[clase] = cupo_maximo
+                        
         except FileNotFoundError:
             messagebox.showwarning("Error", "No se encontró el archivo de clases.")
         
@@ -107,24 +112,49 @@ class Inscripciones:
             # Botón para inscribirse
             boton_inscribirse = ctk.CTkButton(tab, text="Inscribirse", command=lambda c=clase: self.guardar_inscripcion(c))
             boton_inscribirse.pack(pady=10)
+            
+            boton_eliminar = ctk.CTkButton(tab, text="Eliminar inscripción", command=lambda c=clase: self.eliminar_inscripcion(c))
+            boton_eliminar.pack(pady=5)
 
     def guardar_inscripcion(self, clase_seleccionada):
-        
-        if clase_seleccionada and (clase_seleccionada not in self.inscripciones or len(self.inscripciones[clase_seleccionada]) < self.clases_disponibles[clase_seleccionada]) and self.usuario not in self.inscripciones[clase_seleccionada]:
-            with open("Archivos_admi/inscripciones.txt", "a") as archivo:
-                archivo.write(f"Nombre: {self.usuario} - Clase: {clase_seleccionada} - Dia: {self.dia}/{self.mes}/{self.anio}\n")
-            messagebox.showinfo("Éxito", f"Inscripción guardada para {clase_seleccionada}.")
-           
-            if clase_seleccionada not in self.inscripciones:
-                self.inscripciones[clase_seleccionada] = []
-            self.inscripciones[clase_seleccionada].append(self.usuario)
-            
-            self.actualizar_pestania(clase_seleccionada)  
-        else:
-            if self.usuario in self.inscripciones[clase_seleccionada]:
-                messagebox.showwarning("Error", "Ya te encuentras registrado")
+        fecha_actual = date.today()
+        if self.mes >= int(format(fecha_actual.month)): 
+            if clase_seleccionada and (clase_seleccionada not in self.inscripciones or len(self.inscripciones.get(clase_seleccionada, [])) < self.clases_disponibles.get(clase_seleccionada, 0)):
+                if self.usuario not in self.inscripciones.get(clase_seleccionada, []):  # Verifica que el usuario no esté inscrito
+                    with open("Archivos_admi/inscripciones.txt", "a") as archivo:
+                        archivo.write(f"Nombre: {self.usuario} - Clase: {clase_seleccionada} - Dia: {self.dia}/{self.mes}/{self.anio}\n")
+                    messagebox.showinfo("Éxito", f"Inscripción guardada para {clase_seleccionada}.")
+
+                    # Si la clase no está en el diccionario de inscripciones, la creamos
+                    if clase_seleccionada not in self.inscripciones:
+                        self.inscripciones[clase_seleccionada] = []
+                    self.inscripciones[clase_seleccionada].append(self.usuario)
+
+                    # Actualiza la pestaña para reflejar los nuevos datos
+                    self.actualizar_pestania(clase_seleccionada)
+                else:
+                    messagebox.showwarning("Error", "Ya estás registrado en esta clase.")
             else:
                 messagebox.showwarning("Error", "No hay cupos disponibles o la clase no está seleccionada.")
+        else:
+            messagebox.showwarning("Error", "Esta clase ya paso")
+    def eliminar_inscripcion(self, clase_seleccionada):
+        if clase_seleccionada in self.inscripciones and self.usuario in self.inscripciones[clase_seleccionada]:
+            # Elimina la inscripción del archivo
+            with open("Archivos_admi/inscripciones.txt", "r") as archivo:
+                lineas = archivo.readlines()
+            
+            with open("Archivos_admi/inscripciones.txt", "w") as archivo:
+                for linea in lineas:
+                    if not (f"Nombre: {self.usuario} - Clase: {clase_seleccionada} - Dia: {self.dia}/{self.mes}/{self.anio}" in linea):
+                        archivo.write(linea)
+            
+            # Actualiza las inscripciones en memoria
+            self.inscripciones[clase_seleccionada].remove(self.usuario)
+            messagebox.showinfo("Éxito", f"Inscripción eliminada para {clase_seleccionada}.")
+            self.actualizar_pestania(clase_seleccionada)
+        else:
+            messagebox.showwarning("Error", "No estás inscrito en esta clase.")
     
     def actualizar_pestania(self, clase_seleccionada):
         cupo_maximo = self.clases_disponibles[clase_seleccionada]
