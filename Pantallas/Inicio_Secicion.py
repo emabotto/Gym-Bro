@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 import customtkinter as ctk
 from PIL import Image
 from Pantallas.Ventana import Miventana
@@ -49,6 +50,8 @@ class VentanaIniciarSecion(Miventana):
                 iniciar = Inicio(self.persona)
                 iniciar.Abrir_ventana()
                 iniciar.mostrar()
+            else:
+                messagebox.showerror('Fallo de inicio','Usuario y/o contraseña incorrecta')
         elif Apretado == 'Registrarse':
             from Pantallas.Ventana_Registro import Registro # Se importa desde aca porque arriba genera una dependecia circular 
             self.main_ventana.destroy()

@@ -6,7 +6,7 @@ from Mostrar.Calendario import Calendario
 from Mostrar.Perfil import Perfil
 from Archivos_admi.Manejo_de_Clases import *
 from Archivos_admi.Manejo_de_Usuarios import *
-
+from Mostrar.Rutina import *
 class Inicio(Miventana):
     def __init__(self,ingreso):
         super().__init__('Gym-Bro - Menu Principal',625,975)
@@ -47,18 +47,27 @@ class Inicio(Miventana):
         elif apretado == 'Perfil':
             self.borrar_contenedor()
             self.MostrarPerfil()
-        elif apretado == 'Configuracion':
+        elif apretado == 'Rutina':
             self.borrar_contenedor()
-            self.MostrarCalendario()
+            self.mostrar_rutina()
         elif apretado == 'Agregar Clases':
             self.borrar_contenedor()
             self.administrar_clases()
+        elif apretado == 'Generar Reporte':
+            self.borrar_contenedor()
+            self.generar_reporte()
         elif apretado == 'Administrar Usuarios':
             self.borrar_contenedor()
             self.administrar_usuario()
         else: 
             self.borrar_contenedor()
     
+    def generar_reporte(self):
+        mostrar_mensaje(self.contenedor2)
+        
+    def mostrar_rutina(self):
+        mostrar_mensaje(self.contenedor2)
+        
     def administrar_clases(self):
         Clases(self.contenedor2)
         
@@ -73,7 +82,7 @@ class Inicio(Miventana):
         Perfil(self.contenedor2,self.ingreso)
 
     def Menu_Lateral(self):
-        botones =  ['Calendario','Perfil','Configuracion','Rutina','Agregar Clases','Generar Reporte','Administrar Usuarios']
+        botones =  ['Calendario','Perfil','Rutina','Agregar Clases','Generar Reporte','Administrar Usuarios']
         alt = 10
         cont = 0 
 

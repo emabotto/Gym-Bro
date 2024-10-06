@@ -1,9 +1,7 @@
 import tkinter as tk
 import customtkinter as ctk
 
-def Cargar_Rutina():
-    with open('Rutina.txt', 'r') as archivo:
-        for linea in archivo:
-            linea = linea.strip().replace("\\r", "").replace("\n", "").replace("'", "")
-            rutina = linea.split(',')
-            
+def mostrar_mensaje(ventana_secundaria):
+    
+    mensaje = ctk.CTkLabel(ventana_secundaria, text="Esta función se implementará en una versión futura.", font=("Arial", 25, "bold"), text_color="#00aaff")
+    mensaje.pack(pady=(160, 220))
