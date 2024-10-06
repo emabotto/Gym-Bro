@@ -3,8 +3,6 @@ from BaseDeDatos.Usuario import Usuario
 from BaseDeDatos.Datos import Leer_Datos_Guardados
 
 if __name__ == "__main__":
-    
-    usuarios = Usuario()
     Leer_Datos_Guardados()
     
     inicio = VentanaIniciarSecion()

@@ -13,19 +13,16 @@ Nombre: Maria - Clase: Boxeo - Dia: 02/10/2024
 Nombre: Luis - Clase: Funcional - Dia: 02/10/2024
 Nombre: Laura - Clase: Funcional - Dia: 02/10/2024
 Nombre: Maria - Clase: Funcional - Dia: 02/10/2024
-Nombre: Ana - Clase: Funcional - Dia: 02/10/2024
 Nombre: Laura - Clase: Calistenia - Dia: 02/10/2024
 Nombre: Carlos - Clase: Zumba - Dia: 03/10/2024
 Nombre: Maria - Clase: Zumba - Dia: 03/10/2024
 Nombre: Valeria - Clase: Zumba - Dia: 03/10/2024
 Nombre: Sofia - Clase: Funcional - Dia: 03/10/2024
-Nombre: Luis - Clase: Funcional - Dia: 03/10/2024
 Nombre: Carlos - Clase: Funcional - Dia: 03/10/2024
 Nombre: Sofia - Clase: Crossfit - Dia: 03/10/2024
 Nombre: Carlos - Clase: Crossfit - Dia: 03/10/2024
 Nombre: Pedro - Clase: Crossfit - Dia: 03/10/2024
 Nombre: Carlos - Clase: Boxeo - Dia: 03/10/2024
-Nombre: Carlos - Clase: Calistenia - Dia: 04/10/2024
 Nombre: Valeria - Clase: Calistenia - Dia: 04/10/2024
 Nombre: Ana - Clase: Calistenia - Dia: 04/10/2024
 Nombre: Laura - Clase: Zumba - Dia: 04/10/2024
@@ -272,3 +269,7 @@ Nombre: emanuel botto - Clase: Zumba - Dia: 12/9/2024
 Nombre: emanuel botto - Clase: Crossfit - Dia: 18/9/2024
 Nombre: emanuel botto - Clase: Crossfit - Dia: 18/9/2024
 Nombre: emanuel botto - Clase: Boxeo - Dia: 18/9/2024
+Nombre: emanuel botto - Clase: Funcional - Dia: 9/10/2024
+Nombre: emanuel botto - Clase: Zumba - Dia: 9/10/2024
+Nombre: emanuel botto - Clase: Crossfit - Dia: 18/9/2024
+Nombre: emanuel botto - Clase: Crossfit - Dia: 18/9/2024
