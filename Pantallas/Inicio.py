@@ -7,6 +7,7 @@ from Mostrar.Perfil import Perfil
 from Archivos_admi.Manejo_de_Clases import *
 from Archivos_admi.Manejo_de_Usuarios import *
 from Mostrar.Rutina import *
+
 class Inicio(Miventana):
     def __init__(self,ingreso):
         super().__init__('Gym-Bro - Menu Principal',625,975)
@@ -27,19 +28,7 @@ class Inicio(Miventana):
     def Contenedores(self):
         self.contenedor2 = ctk.CTkFrame(self.main_ventana)
         self.contenedor2.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
-        self.CargarImagenFondo() 
-        
-    def CargarImagenFondo(self):
-        imagen_original = Image.open("Imagenes/Imagen 1.jpg")
-        
-        imagen_redimensionada = imagen_original.resize((500, 500))  
-        
-        self.background_image = ImageTk.PhotoImage(imagen_redimensionada)
-
-        fondo_label = ctk.CTkLabel(self.contenedor2, image=self.background_image, text='')
-        fondo_label.place(relwidth=1, relheight=1)
-        
-        
+               
     def botones(self,apretado):
         if apretado == 'Calendario':
             self.borrar_contenedor()
