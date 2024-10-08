@@ -39,7 +39,7 @@ class Inicio(Miventana):
         elif apretado == 'Rutina':
             self.borrar_contenedor()
             self.mostrar_rutina()
-        elif apretado == 'Agregar Clases':
+        elif apretado == 'Clases':
             self.borrar_contenedor()
             self.administrar_clases()
         elif apretado == 'Generar Reporte':
@@ -71,7 +71,7 @@ class Inicio(Miventana):
         Perfil(self.contenedor2,self.ingreso)
 
     def Menu_Lateral(self):
-        botones =  ['Calendario','Perfil','Rutina','Agregar Clases','Generar Reporte','Administrar Usuarios']
+        botones =  ['Calendario','Perfil','Rutina','Clases','Generar Reporte','Administrar Usuarios']
         alt = 10
         cont = 0 
 

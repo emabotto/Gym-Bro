@@ -256,7 +256,6 @@ Nombre: Maria - Clase: Zumba - Dia: 29/10/2024
 Nombre: Sofia - Clase: Crossfit - Dia: 30/10/2024
 Nombre: Pedro - Clase: Crossfit - Dia: 30/10/2024
 Nombre: Carlos - Clase: Crossfit - Dia: 30/10/2024
-Nombre: Valeria - Clase: Crossfit - Dia: 30/10/2024
 Nombre: Maria - Clase: Zumba - Dia: 30/10/2024
 Nombre: Ana - Clase: Zumba - Dia: 30/10/2024
 Nombre: Juan - Clase: Calistenia - Dia: 30/10/2024
