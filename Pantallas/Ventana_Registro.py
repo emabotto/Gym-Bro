@@ -8,7 +8,8 @@ from BaseDeDatos.Datos import *
 class Registro(Miventana):
     def __init__(self):
         super().__init__('Registro de Usuario',600,450)
-
+        self.tipo = 0
+        
     def Abrir_ventana(self):
 
         contenedor_registro = ctk.CTkFrame(master=self.main_ventana,corner_radius=10)
@@ -66,14 +67,19 @@ class Registro(Miventana):
         nombre = self.nombre_regis.get()
         apellido = self.apellido_regis.get()
 
-        if nombre != '' and apellido != '' and self.usuario != ''and self.contra != '':
-            if verificar_registro(self.usuario) != True:
-                tipo = self.admin.get()
-                telefono = 'Ingresar telefono'
-                Agregar_Usuario(self.usuario,self.contra,tipo, nombre,apellido,telefono)
-                messagebox.showinfo('Registro exitoso','El usuario se registro correctamente')
-                self.Cerrar_Ventana()
+        if nombre != '' and apellido != '' and self.usuario != '' and self.contra != '':
+            if '@gmail.com' in self.usuario and self.usuario[(len(self.usuario)-10):len(self.usuario)] == '@gmail.com' : # Verifico que lo ultimo que se escribio sea @gmail.com
+                if len(self.contra) >= 8: 
+                    if verificar_registro(self.usuario) != True:
+                        telefono = 'Ingresar telefono'
+                        Agregar_Usuario(self.usuario,self.contra,self.tipo, nombre,apellido,telefono)
+                        messagebox.showinfo('Registro exitoso','El usuario se registro correctamente')
+                        self.Cerrar_Ventana()
+                    else:
+                        messagebox.showerror('Fallo en Registro','Ya existe este usuario')
+                else:
+                    messagebox.showerror('Fallo en Registro','La contraseña tiene que ser de 8 o mas caracteres')
             else:
-                messagebox.showerror('Fallo en Registro','Ya existe este usuario')
+                messagebox.showerror('Fallo en Registro','Correo electronico invalido')
         else:
             messagebox.showinfo('Fallo en Registro','Algunos campos no se comletaron')

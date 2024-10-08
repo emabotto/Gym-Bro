@@ -15,16 +15,13 @@ class Gestion_Usuario:
         self.scroll_frame.grid_columnconfigure(2, weight=1)  # Columna de botones
         
         self.privilegios_seleccionables = ['Cliente', 'Administrador']
+    
+        self.elimnar_icon = self.cargar_icono("Imagenes/Inconos/Basurero.png")
+        self.refrescar_icon = self.cargar_icono("Imagenes/Inconos/Actualizar.png")
         
-        # Cargar íconos
-        self.trash_icon = self.cargar_icono("Imagenes/Inconos/Basurero.png")
-        self.act_icon = self.cargar_icono("Imagenes/Inconos/Actualizar.png")
-        
-        # Mostrar los usuarios al cargar
         self.Mostrar_Usuarios_registrados()
 
     def cargar_icono(self, ruta):
-        # Función para cargar y redimensionar íconos
         icono = Image.open(ruta)
         icono = icono.resize((20, 20), Image.Resampling.LANCZOS)
         return ImageTk.PhotoImage(icono)
@@ -42,26 +39,18 @@ class Gestion_Usuario:
         usuarios = self.Limpiar_Lista()
         for i, usuario in enumerate(usuarios):
             ctk.CTkLabel(self.scroll_frame, text=usuario[0], anchor="w").grid(row=i+1, column=0, padx=20, pady=10, sticky="ew")
-            
-            # ComboBox para seleccionar nuevos privilegios
+
             nuevo_privilegio = ctk.CTkOptionMenu(self.scroll_frame, values=self.privilegios_seleccionables)
             nuevo_privilegio.set(usuario[-1])
             nuevo_privilegio.grid(row=i+1, column=1, padx=20, pady=10, sticky="ew")
-            
-            # Botones de acción
+
             self.crear_botones_accion(i, nuevo_privilegio, 2)
 
     def crear_botones_accion(self, i, nuevo_privilegio, col):
-        # Botón para actualizar privilegios
-        ctk.CTkButton(self.scroll_frame, text='', image=self.act_icon, 
-                      command=lambda: self.Actualizar_Privilegio(i, nuevo_privilegio), width=20, height=20).grid(row=i+1, column=col, padx=20, pady=10)
-        
-        # Botón para eliminar usuario
-        ctk.CTkButton(self.scroll_frame, text='', image=self.trash_icon, 
-                      command=lambda: self.Eliminar_Usuario(i), width=20, height=20).grid(row=i+1, column=col+1, padx=5, pady=10)
+        ctk.CTkButton(self.scroll_frame, text='', image=self.refrescar_icon, command=lambda: self.Actualizar_Privilegio(i, nuevo_privilegio), width=20, height=20).grid(row=i+1, column=col, padx=20, pady=10)
+        ctk.CTkButton(self.scroll_frame, text='', image=self.elimnar_icon, command=lambda: self.Eliminar_Usuario(i), width=20, height=20).grid(row=i+1, column=col+1, padx=5, pady=10)
 
     def Limpiar_Lista(self):
-        # Cargar datos de la base de datos y transformar los privilegios
         lista = []
         for i in range(len(usu.correo)):
             datos = Tomar_Datos(i)
@@ -69,22 +58,18 @@ class Gestion_Usuario:
             lista.append(tuple(datos[:1] + [datos[5]]))
         return lista
 
-    def Actualizar_Privilegio(self, i, nuevo_privilegio_widget):
-        # Actualizar privilegios en la base de datos
-        nuevo_privilegio = nuevo_privilegio_widget.get()
-        usuario_id = self.Limpiar_Lista()[i][0]  
-        privilegio_valor = '1' if nuevo_privilegio == 'Administrador' else '0'
-        self.Actualizar_Privilegio_Usuario(usuario_id, privilegio_valor)
-        self.Mostrar_Usuarios_registrados()  # Recargar usuarios actualizados
+    def Actualizar_Privilegio(self, usuario_correo, nuevo_privilegio):
+        privilegio = nuevo_privilegio.get()
+        privilegio_valor = '1' if privilegio == 'Administrador' else '0'
+        self.Actualizar_Privilegio_Usuario(usuario_correo, privilegio_valor)
+        self.Mostrar_Usuarios_registrados()
 
-    def Eliminar_Usuario(self, i):
-        # Eliminar usuario tras confirmación
-        usuario_id = self.Limpiar_Lista()[i][0] 
-        confirmacion = messagebox.askyesno("Confirmar", "¿Estás seguro de que quieres eliminar este usuario?")
+    def Eliminar_Usuario(self, usuario_correo):
+        confirmacion = messagebox.askyesno("Confirmar", f"¿Estás seguro de que quieres eliminar el usuario {usuario_correo}?")
         if confirmacion:
-            self.Eliminar_Usuario_BD(usuario_id)
+            self.Eliminar_Usuario_BD(usuario_correo)
             self.Mostrar_Usuarios_registrados()
-        
+    
     def Actualizar_Privilegio_Usuario(self, usuario_id, privilegio_valor):
         usuarios = []
         

@@ -7,9 +7,9 @@ class Perfil:
     def __init__(self,contenedor,i):
 
         self.contenedor =  ctk.CTkFrame(contenedor, width=300, height=600)
-        self.contenedor.grid(row=0, column=0, padx=50, pady=100, sticky="nsew")#El sticky hace que se ocupe el espacio de todo el contenedor
+        self.contenedor.grid(row=0, column=0, padx=50, pady=120, sticky="nsew")#El sticky hace que se ocupe el espacio de todo el contenedor
         self.contenedor2 =  ctk.CTkFrame(contenedor, width=200, height=600)
-        self.contenedor2.grid(row=0, column=1, padx=10, pady=120, sticky="nsew")
+        self.contenedor2.grid(row=0, column=1, padx=0, pady=140, sticky="nsew")
 
         self.i = int(i)
         self.lista = Tomar_Datos(self.i)
@@ -38,7 +38,7 @@ class Perfil:
         
         for i in self.entradas:
             boton = ctk.CTkButton(self.contenedor, text='Editar', command=lambda texto = i: self.EditarCampo(texto),width=40, height=30)
-            boton.grid(row=fila, column=2, padx=5, pady=5)
+            boton.grid(row=fila, column=2, padx=25, pady=5)
             fila += 1
         
         boton = ctk.CTkButton(self.contenedor, text='Guardar Cambios', command=self.GuardarCambios)
@@ -63,23 +63,15 @@ class Perfil:
         self.mod.append(self.imagen)
         print(self.mod)
         Modificar_Datos(self.mod, self.i)
-        #self.Actualizar_Campos()
+
         self.Mostrar_en_Pantalla()
-
-    #def Actualizar_Campos(self):
-        """for entrada, valor in zip(self.entradas, self.lista):
-            entrada.delete(0, 'end')
-            entrada.insert(0, valor)
-            entrada.configure(state='disabled')
-        self.mod = []"""
-
-        
+   
     def Mostrar_Imagen(self,imagen):
         tamanio = (175,175)
         imagen_elejida = Image.open(imagen) 
         foto = ctk.CTkImage(dark_image=imagen_elejida, size= tamanio)  
         label = ctk.CTkLabel(self.contenedor2, text='',image= foto, anchor=('center'))
-        label.grid(row=0, column=1, padx=30, pady=10)
+        label.grid(row=0, column=1, padx=15, pady=10)
 
     def Cargar_Imagen(self): # Carga fotos de perfil que esten en la carpeta 'Imagenes'
         archivo = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.jpeg *.png *.gif")]) #Solo archivos con este formato

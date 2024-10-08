@@ -2,7 +2,6 @@ import customtkinter as ctk
 from tkinter import messagebox, Listbox, END
 from datetime import date
 import calendar
-import os
 
 class Clases:
     def __init__(self, ventana) -> None:
@@ -11,20 +10,18 @@ class Clases:
         self.fecha = date.today()
         self.mes = int(format(self.fecha.month))
         self.anio = int(format(self.fecha.year))
-        self.basura, self.cant_dias = calendar.monthrange(self.anio, self.mes)
+        basura, self.cant_dias = calendar.monthrange(self.anio, self.mes)
         
         self.crear_clase()
 
     def crear_clase(self):
-        # Listas para las opciones
-        clases = ['Funcional', 'Crossfit', 'Zumba', 'Calistenia', 'Boxeo']
+        self.clases = ['Funcional', 'Crossfit', 'Zumba', 'Calistenia', 'Boxeo']
         meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
         # Contenedor principal
         contenedor = ctk.CTkFrame(self.ventana, corner_radius=10, fg_color="transparent")
         contenedor.pack(padx=20, pady=120)
 
-        # Título
         titulo = ctk.CTkLabel(contenedor, text="CREAR CLASE", font=("Arial", 20, "bold"), text_color="#00aaff")
         titulo.grid(row=0, column=0, columnspan=2, pady=10)
 
@@ -46,7 +43,7 @@ class Clases:
         self.tipo = ctk.StringVar(value="Elegir clase")
         tipo_clase = ctk.CTkLabel(contenedor, text="Tipo de la Clase:", text_color="white")
         tipo_clase.grid(row=3, column=0, padx=20, pady=5, sticky="e")
-        tipo_clase_menu = ctk.CTkOptionMenu(contenedor, variable=self.tipo, values=clases, width=150)
+        tipo_clase_menu = ctk.CTkOptionMenu(contenedor, variable=self.tipo, values=self.clases, width=150)
         tipo_clase_menu.grid(row=3, column=1, padx=20, pady=5, sticky="w")
 
         # Definir cupo máximo
@@ -64,6 +61,112 @@ class Clases:
         mostrar_inscritos = ctk.CTkButton(contenedor, text="Mostrar Inscritos", command=self.mostrar_inscritos, width=150)
         mostrar_inscritos.grid(row=6, column=0, columnspan=2, pady=10)
 
+        #Boton modificar clase
+        modificar_clases = ctk.CTkButton(contenedor, text="Modificar Clases", command=self.modificar_clase, width=150)
+        modificar_clases.grid(row=7, column=0, columnspan=2, pady=20)
+    
+    def modificar_clase(self):
+        self.cargar_clases()
+
+    def mostrar_clases(self):
+        # Si ya hay una ventana abierta, la cerramos antes de abrir otra
+        if hasattr(self, 'ventana_clases') and self.ventana_clases.winfo_exists():
+            self.ventana_clases.destroy()
+
+        self.ventana_clases = ctk.CTkToplevel(self.ventana)
+        self.ventana_clases.geometry('550x500')
+        self.ventana_clases.title("Gestión de Clases")
+
+        row_num = 0
+        col_num = 0
+
+        for tipo, clases in self.clases_por_tipo.items():  # Cambiar 'self.clases' por 'clases'
+            frame = ctk.CTkFrame(self.ventana_clases, width=180, height=200)
+            frame.grid(row=row_num, column=col_num, padx=10, pady=10)
+
+            label_tipo = ctk.CTkLabel(frame, text=tipo, font=("Arial", 14, "bold"))
+            label_tipo.pack(pady=5)
+
+            lista_clases = Listbox(frame, height=5)
+            lista_clases.pack(padx=10, pady=5)
+
+            for clase in clases:
+                lista_clases.insert(END, clase)
+
+            # Botón para eliminar clase
+            eliminar_boton = ctk.CTkButton(frame, text="Eliminar Clase", command=lambda lista=lista_clases: self.eliminar_clase(lista))
+            eliminar_boton.pack(pady=5)
+
+            # Botón para cambiar cupo máximo
+            cambiar_boton = ctk.CTkButton(frame, text="Cambiar Cupo", command=lambda lista=lista_clases: self.cambiar_cupo(lista))
+            cambiar_boton.pack(pady=5)
+
+            col_num += 1
+            if col_num == 3:  # Máximo 3 columnas
+                col_num = 0
+                row_num += 1
+
+    def eliminar_clase(self, lista_clases):
+        seleccionada = lista_clases.curselection()
+        if seleccionada:  # Solo proceder si hay una selección
+            clase = lista_clases.get(seleccionada)
+            confirmacion = messagebox.askyesno("Confirmar", f"¿Estás seguro de que quieres eliminar la clase '{clase}'?")
+            if confirmacion:
+                self.remover_clase_del_archivo(clase)  # Eliminar de archivo
+                lista_clases.delete(seleccionada)  # Eliminar de la lista visual
+                messagebox.showinfo("Éxito", "Clase eliminada correctamente.")
+        else:
+            messagebox.showwarning("Advertencia", "Por favor, selecciona una clase para eliminar.")
+
+    def remover_clase_del_archivo(self, clase_a_eliminar):
+        archivo_ruta = 'Archivos_admi/clases.txt'
+        
+        lineas_a_conservar = []
+        
+        with open(archivo_ruta, 'r') as archivo:
+            for linea in archivo:
+                if clase_a_eliminar not in linea:
+                    lineas_a_conservar.append(linea)
+        
+        with open(archivo_ruta, 'w') as archivo:
+            for linea in lineas_a_conservar:
+                archivo.write(linea)
+        
+        self.cargar_clases()  # Recarga la lista de clases en la ventana activa
+
+    def cargar_clases(self):
+        self.clases_por_tipo = {tipo: [] for tipo in self.clases}
+
+        archivo_ruta = 'Archivos_admi/clases.txt'
+        with open(archivo_ruta, 'r') as archivo:
+            for linea in archivo:
+                partes = linea.strip().split(" - ")
+                if len(partes) == 3:
+                    tipo_clase = partes[0].replace("Clase: ", "")
+                    dia = partes[1].replace("Dia: ", "")
+                    cupo = partes[2].replace("Cupo Maximo: ", "")
+                    if tipo_clase in self.clases_por_tipo:  # Verificar si el tipo de clase es válido
+                        self.clases_por_tipo[tipo_clase].append(f"{dia} - {cupo}")
+        self.mostrar_clases()  # Muestra las clases actualizadas
+
+
+    def cambiar_cupo(self, lista_clases):
+        seleccionada = lista_clases.curselection()
+        if seleccionada:
+            clase = lista_clases.get(seleccionada)
+            nuevo_cupo = ctk.CTkEntry(self.ventana_clases)
+            nuevo_cupo.pack(pady=10)
+
+            def guardar_cupo():
+                nuevo_cupo_valor = nuevo_cupo.get()
+                self.actualizar_cupo(clase, nuevo_cupo_valor)
+                nuevo_cupo.delete(0, END)
+
+            guardar_boton = ctk.CTkButton(self.ventana_clases, text="Guardar Cupo", command=guardar_cupo)
+            guardar_boton.pack(pady=5)
+        else:
+            messagebox.showwarning("Advertencia", "Por favor, selecciona una clase para cambiar el cupo.")
+        
     def guardar_clase(self):
         clase_seleccionada = self.tipo.get()
         dia_seleccionado = self.dia.get()
@@ -71,21 +174,16 @@ class Clases:
 
         meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
         mes_numero = meses.index(mes_seleccionado) + 1
-        fecha_clase = f"{int(dia_seleccionado):02d}/{mes_numero:02d}/2024"
+        fecha_clase = f"{int(dia_seleccionado):02d}/{mes_numero:02d}/2024"  # El :02d -> Convierte el dia con dos digios, ejemplo 1/2/2024 -> 01/02/2024
 
         archivo_ruta = 'Archivos_admi/clases.txt'
-
-        if not os.path.exists(archivo_ruta):
-            ctk.CTkLabel(self.ventana, text="Error: No se encontró el archivo clases.txt", text_color="red").pack(pady=10)
-            return
-
+        
         clase_existe = False
         with open(archivo_ruta, 'r') as archivo:
             for linea in archivo:
                 if f"Clase: {clase_seleccionada}" in linea and f"Dia: {fecha_clase}" in linea:
                     clase_existe = True
                     break
-
         if clase_existe:
             messagebox.showerror("Error", f"Ya existe la clase en el día {fecha_clase}")
         else:
@@ -100,10 +198,6 @@ class Clases:
 
         archivo_ruta = 'Archivos_admi/inscripciones.txt'
 
-        if not os.path.exists(archivo_ruta):
-            messagebox.showerror("Error", "No se encontró el archivo de inscripciones.")
-            return
-        
         inscritos_por_clase = {}
         with open(archivo_ruta, 'r') as archivo:
             for linea in archivo:
